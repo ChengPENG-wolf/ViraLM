@@ -18,13 +18,19 @@ Viral Language Model (ViraLM) is a Python library for virus identification from 
 
 *Note*: we suggest you to install all the package using conda ([miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://anaconda.org/)).
 
+
+Clone the repository to local
+
+```
+git clone https://github.com/ChengPENG-wolf/ViraLM.git
+cd ViraLM
+```
+
+Install package using mamba
+
 ```
 # if you do not have mamba, install it into the conda base environment
 conda install conda-forge::mamba
-
-# clone the repository to local:
-git clone https://github.com/ChengPENG-wolf/ViraLM.git
-cd ViraLM
 
 # install and activate environment for ViraLM
 mamba env create -f viralm.yaml -n viralm
@@ -47,7 +53,7 @@ python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--len MINIMUM_LEN] [-
 **Options**
 
 ```
-  --input INPUT_FA
+--input INPUT_FA
                         The path of your input fasta file
   --output OUTPUT_PTH
 			The path of your output diectory
