@@ -46,7 +46,8 @@ rm model.tar.gz
 
 ## Usage
 
-### Run all pipelines in one command:
+### Run ViraLM in one command:
+*Note*: we recommend to run ViraLM on GPU to accelerate computation.
 
 ```
 python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--len MINIMUM_LEN] [--threshold THRESHOLD]
