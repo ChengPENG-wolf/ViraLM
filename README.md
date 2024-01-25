@@ -47,7 +47,7 @@ python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--len MINIMUM_LEN] [-
 **Options**
 
 ```
---input INPUT_FA
+  --input INPUT_FA
                         The path of your input fasta file
   --output OUTPUT_PTH
 			The path of your output diectory
