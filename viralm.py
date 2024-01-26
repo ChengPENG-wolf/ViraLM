@@ -143,7 +143,6 @@ def tokenize_function(examples):
 
 
 preprocee_data(input_pth, output_pth, len_threshold)
-transformers.logging.set_verbosity_error()
 
 model = AutoModelForSequenceClassification.from_pretrained(
         model_pth,
@@ -200,8 +199,8 @@ for seq_name in result:
         f.write(f'non-virus,{score}\n')
 f.close()
 
+print('')
 print('ViraLM prediction finished.')
-
 
 for root, dirs, files in os.walk(f'{output_pth}', topdown=False):
     for name in files:
