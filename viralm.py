@@ -166,6 +166,7 @@ tokenized_datasets = tokenized_datasets.with_format("torch")
 test_loader = DataLoader(tokenized_datasets["test"], batch_size=batch_size, collate_fn=data_collator)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f'\nRunning on {device} device')
 model.to(device)
 
 softmax = Softmax(dim=0)
@@ -199,8 +200,7 @@ for seq_name in result:
         f.write(f'non-virus,{score}\n')
 f.close()
 
-print('')
-print('ViraLM prediction finished.')
+print('\nViraLM prediction finished.')
 
 for root, dirs, files in os.walk(f'{output_pth}', topdown=False):
     for name in files:
