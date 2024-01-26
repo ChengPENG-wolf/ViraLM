@@ -61,7 +61,7 @@ def special_match(strg, search=re.compile(r'[^ACGT]').search):
 def preprocee_data(input_pth, output_pth, len_threshold):
     frag_len = 2000
     filename = input_pth.rsplit('/')[-1].split('.')[0]
-    f = open(f"{output_pth}/{filename}_temp.csv", "w")
+    f = open(f"{cache_dir}/{filename}_temp.csv", "w")
     f.write(f'sequence,accession\n')
     for record in SeqIO.parse(input_pth, "fasta"):
         sequence = str(record.seq).upper()
@@ -199,10 +199,13 @@ for seq_name in result:
         f.write(f'non-virus,{score}\n')
 f.close()
 
-for root, dirs, files in os.walk(f'{output_pth}', topdown=False):
-    for name in files:
-        if f'result_{filename}.csv' not in name:
-            os.remove(os.path.join(root, name))
-    for name in dirs:
-        os.rmdir(os.path.join(root, name))
 print('ViraLM prediction finished.')
+
+try:
+    for root, dirs, files in os.walk(f'{output_pth}', topdown=False):
+        for name in files:
+            if f'result_{filename}.csv' not in name:
+                os.remove(os.path.join(root, name))
+        for name in dirs:
+            os.rmdir(os.path.join(root, name))
+
