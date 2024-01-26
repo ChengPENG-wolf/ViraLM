@@ -25,9 +25,7 @@ cd ViraLM
 
 # install and activate environment for ViraLM
 conda env create -f viralm.yaml -n viralm
-# mamba env create -f viralm.yaml -n viralm
 conda activate viralm
-# mamba activate viralm
 
 # download and setup the model
 gdown --id 1EQVPmFbpLGrBLU0xCtZBpwvXrtrRxic1
