@@ -208,4 +208,6 @@ try:
                 os.remove(os.path.join(root, name))
         for name in dirs:
             os.rmdir(os.path.join(root, name))
+except:
+    exit(1)
 
