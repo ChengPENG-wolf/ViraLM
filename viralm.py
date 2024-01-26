@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser(description='ViraLM v1.0\nViraLM is a python li
 parser.add_argument('--input', type=str, help='name of the input file (fasta format)')
 parser.add_argument('--output', type=str, help='output directory', default='result')
 parser.add_argument('--len', type=int, help='predict only for sequences >= len bp (default: 500)', default=500)
-parser.add_argument('--threshold', type=int, help='threshold for prediction (default: 0.5)', default=0.5)
+parser.add_argument('--threshold', type=float, help='threshold for prediction (default: 0.5)', default=0.5)
 inputs = parser.parse_args()
 
 input_pth = inputs.input
