@@ -1,3 +1,5 @@
+![ViraLM](logo.png)
+
 # ViraLM
 
 The official implementation of [ViraLM: Language Model empowers virus discovery]
