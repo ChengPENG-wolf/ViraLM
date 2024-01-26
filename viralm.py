@@ -143,6 +143,7 @@ def tokenize_function(examples):
 
 
 preprocee_data(input_pth, output_pth, len_threshold)
+transformers.logging.set_verbosity_error()
 
 model = AutoModelForSequenceClassification.from_pretrained(
         model_pth,
