@@ -1,8 +1,6 @@
 <img src="logo.png" alt="image" width="800" height="300">
 
-# ViraLM
-
-The official implementation of [ViraLM: Language Model empowers virus discovery]
+The official implementation of [ViraLM: Empowering Virus Discovery through the Genome Foundation Model]
 
 
 ## Contents
