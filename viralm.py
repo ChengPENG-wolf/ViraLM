@@ -20,6 +20,7 @@ parser = argparse.ArgumentParser(description='ViraLM v1.0\nViraLM is a python li
                                              'nucleotide information to make prediction.')
 parser.add_argument('--input', type=str, help='name of the input file (fasta format)')
 parser.add_argument('--output', type=str, help='output directory', default='result')
+parser.add_argument('--batch_size', type=int, help='batch size for prediction', default=64)
 parser.add_argument('--len', type=int, help='predict only for sequences >= len bp (default: 500)', default=500)
 parser.add_argument('--threshold', type=float, help='threshold for prediction (default: 0.5)', default=0.5)
 inputs = parser.parse_args()
@@ -40,13 +41,18 @@ if not os.path.exists(model_pth):
     print(f'Model directory {model_pth} missing or unreadable')
     exit(1)
 
-if output_pth != '':
-    if not os.path.isdir(output_pth):
-        os.makedirs(output_pth)
+if output_pth == '':
+    print('Please specify a directory for output')
+    exit(1)
+
+if not os.path.isdir(output_pth):
+    os.makedirs(output_pth)
+else:
+    print('The output directory already exist')
+    exit(1)
 
 if not os.path.isdir(cache_dir):
     os.makedirs(cache_dir)
-
 
 def special_match(strg, search=re.compile(r'[^ACGT]').search):
     return not bool(search(strg))
