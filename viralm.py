@@ -201,13 +201,18 @@ f.close()
 
 print('ViraLM prediction finished.')
 
-try:
-    for root, dirs, files in os.walk(f'{output_pth}', topdown=False):
-        for name in files:
-            if f'result_{filename}.csv' not in name:
+
+for root, dirs, files in os.walk(f'{output_pth}', topdown=False):
+    for name in files:
+        if f'result_{filename}.csv' not in name:
+            try:
                 os.remove(os.path.join(root, name))
-        for name in dirs:
+            except:
+                pass
+    for name in dirs:
+        try:
             os.rmdir(os.path.join(root, name))
-except:
-    exit(1)
+        except:
+            pass
+
 
