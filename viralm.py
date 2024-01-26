@@ -34,21 +34,21 @@ model_pth = 'model'
 filename = input_pth.rsplit('/')[-1].split('.')[0]
 
 if score_threshold < 0.5:
-    print('Threshold for prediction must be >= 0.5')
+    print('Error: Threshold for prediction must be >= 0.5')
     exit(1)
 
 if not os.path.exists(model_pth):
-    print(f'Model directory {model_pth} missing or unreadable')
+    print(f'Error: Model directory {model_pth} missing or unreadable')
     exit(1)
 
 if output_pth == '':
-    print('Please specify a directory for output')
+    print('Error: Please specify a directory for output')
     exit(1)
 
 if not os.path.isdir(output_pth):
     os.makedirs(output_pth)
 else:
-    print('The output directory already exist')
+    print('Error: The output directory already exist')
     exit(1)
 
 if not os.path.isdir(cache_dir):
