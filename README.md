@@ -26,7 +26,7 @@ git clone https://github.com/ChengPENG-wolf/ViraLM.git
 cd ViraLM
 ```
 
-Install package using mamba
+Install package using `mamba`
 
 ```
 # if you do not have mamba, install it into the conda base environment
