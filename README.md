@@ -1,4 +1,4 @@
-![ViraLM](logo.png)
+![ViraLM](logo.png=100x60)
 
 # ViraLM
 
