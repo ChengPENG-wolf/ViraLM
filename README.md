@@ -1,4 +1,4 @@
-<img src="logo.png" alt="image" width=auto height="267">
+<img src="logo.png" alt="image" width="800" height=auto>
 
 The official implementation of [ViraLM: Empowering Virus Discovery through the Genome Foundation Model]
 
