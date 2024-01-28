@@ -34,7 +34,7 @@ rm model.tar.gz
 ```
 
 ## 3. Quick start
-
+*Note*: we suggest you run ViraLM on GPU.
 **Run ViraLM in one command:**
 
 ```
@@ -61,7 +61,26 @@ Prediction on the example file:
 ```
 python viralm.py --input test.fasta --out result --len 500 --threshold 0.5
 ```
+## 4. Output explanation
 
-## 4. Contact
+The results of ViraLM will be written to `OUTPUT_PTH/result_INPUT_FA_NAME.csv`:
+
+```
+seq_name                                             prediction   virus_score           
+--------------------------------------------------   ----------   -----------------
+IMGVR_UViG_2531839437_000001|2531839437|2531897698   virus        0.501383100927341      
+IMGVR_UViG_2529292823_000001|2529292823|2529351314   virus        0.844078302383422
+IMGVR_UViG_2531839021_000001|2531839021|2531843197   virus        0.84503074735403
+…
+```
+
+This tabular file lists all the inputs and ViraLM's prediction on each input:
+
+- `seq_name`: The identifier of the sequence in the input FASTA file.
+- `prediction`: The final prediction of the input sequence, virus or non-virus.
+- `virus_score`: A value in [0, 1.0], indicates the likelihood of the input sequence being a viral sequence. The larger the more likely to be a virus.
+
+
+## 5. Contact
 
 If you have any questions, please email us: cpeng29-c@my.cityu.edu.hk
