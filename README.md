@@ -34,7 +34,9 @@ rm model.tar.gz
 ```
 
 ## 3. Quick start
+
 *Note*: we suggest you run ViraLM on GPU.
+
 **Run ViraLM in one command:**
 
 ```
