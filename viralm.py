@@ -6,6 +6,7 @@ from typing import Dict, Sequence
 from dataclasses import dataclass
 from torch.nn import Softmax
 from Bio import SeqIO
+from torch import nn
 import transformers
 import numpy as np
 import argparse
@@ -166,7 +167,11 @@ tokenized_datasets = tokenized_datasets.with_format("torch")
 test_loader = DataLoader(tokenized_datasets["test"], batch_size=batch_size, collate_fn=data_collator)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f'\nRunning on {device} device')
+if torch.cuda.device_count() > 1:
+    print(f'\nRunning on {torch.cuda.device_count()} GPUs.')
+    model = nn.DataParallel(model)
+else:
+    print(f'\nRunning on {device}.')
 model.to(device)
 
 softmax = Softmax(dim=0)
