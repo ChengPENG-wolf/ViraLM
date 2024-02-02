@@ -8,7 +8,8 @@ The official implementation of [ViraLM: Empowering Virus Discovery through the G
 - [1. Introduction](#1-introduction)
 - [2. Setup Environment](#2-setup-environment)
 - [3. Quick Start](#3-quick-start)
-- [4. Contact](#4-citation)
+- [4. Output explanation](#4-output-explanation)
+- [5. Contact](#5-citation)
 
 ## 1. Overview
 
