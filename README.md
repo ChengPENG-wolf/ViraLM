@@ -1,6 +1,6 @@
 <img src="logo.png" alt="image" width="800" height=auto>
 
-The official implementation of [ViraLM: Empowering Virus Discovery through the Genome Foundation Model]
+The official implementation of [ViraLM: Empowering Virus Discovery through the Genome Foundation Model](https://doi.org/10.1101/2024.01.30.577935)
 
 
 ## Contents
