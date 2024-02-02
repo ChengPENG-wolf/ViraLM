@@ -9,7 +9,8 @@ The official implementation of [ViraLM: Empowering Virus Discovery through the G
 - [2. Setup Environment](#2-setup-environment)
 - [3. Quick Start](#3-quick-start)
 - [4. Output explanation](#4-output-explanation)
-- [5. Contact](#5-citation)
+- [5. Citation](#5-citation)
+- [6. Contact](#6-contact)
 
 ## 1. Overview
 
@@ -83,7 +84,13 @@ This tabular file lists all the inputs and ViraLM's prediction on each input:
 - `prediction`: The final prediction of the input sequence, virus or non-virus.
 - `virus_score`: A value in [0, 1.0], indicates the likelihood of the input sequence being a viral sequence. The larger the more likely to be a virus.
 
+## 5. Citation
 
-## 5. Contact
+If you use ViraLM in your research, please kindly cite our paper:
+```
+Coming soon
+```
+
+## 6. Contact
 
 If you have any questions, please email us: cpeng29-c@my.cityu.edu.hk
