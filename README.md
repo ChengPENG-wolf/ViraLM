@@ -88,7 +88,14 @@ This tabular file lists all the inputs and ViraLM's prediction on each input:
 
 If you use ViraLM in your research, please kindly cite our paper:
 ```
-Coming soon
+@article{peng2024viralm,
+  title={ViraLM: Empowering Virus Discovery through the Genome Foundation Model},
+  author={Peng, Cheng and Shang, Jiayu and Guan, Jiaojiao and Wang, Donglin and Sun, Yanni},
+  journal={bioRxiv},
+  pages={2024--01},
+  year={2024},
+  publisher={Cold Spring Harbor Laboratory}
+}
 ```
 
 ## 6. Contact
