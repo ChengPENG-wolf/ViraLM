@@ -1,4 +1,5 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from torch.utils.data import DataLoader
 from datasets import load_dataset
 from torch.utils.data import Dataset
@@ -9,18 +10,19 @@ from Bio import SeqIO
 from torch import nn
 import transformers
 import numpy as np
+import threading
 import argparse
 import torch
 import csv
 import re
 import os
 
-
 parser = argparse.ArgumentParser(description='ViraLM v1.0\nViraLM is a python library for identifying viruses from'
                                              'metagenomic data. ViraLM is based on the language model and rely on '
                                              'nucleotide information to make prediction.')
 parser.add_argument('--input', type=str, help='name of the input file (fasta format)')
 parser.add_argument('--output', type=str, help='output directory', default='result')
+parser.add_argument('--threads', type=int, help='number of threads if run on cpu', default=1)
 parser.add_argument('--batch_size', type=int, help='batch size for prediction', default=64)
 parser.add_argument('--len', type=int, help='predict only for sequences >= len bp (default: 500)', default=500)
 parser.add_argument('--threshold', type=float, help='threshold for prediction (default: 0.5)', default=0.5)
@@ -31,6 +33,7 @@ output_pth = inputs.output
 batch_size = inputs.batch_size
 len_threshold = int(inputs.len)
 score_threshold = float(inputs.threshold)
+cpu_threads = int(inputs.threads)
 cache_dir = f'{output_pth}/cache'
 model_pth = 'model'
 filename = input_pth.rsplit('/')[-1].split('.')[0]
@@ -164,9 +167,36 @@ data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
 test_dataset = load_dataset('csv', data_files={'test': f'{cache_dir}/{filename}_temp.csv'}, cache_dir=cache_dir)
 tokenized_datasets = test_dataset.map(tokenize_function, batched=True, batch_size=256, remove_columns=["sequence"])
 tokenized_datasets = tokenized_datasets.with_format("torch")
-test_loader = DataLoader(tokenized_datasets["test"], batch_size=batch_size, collate_fn=data_collator)
+test_loader = DataLoader(tokenized_datasets["test"], batch_size=512, collate_fn=data_collator)
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+def cpu_worker(batch, model, device):
+    result = {}
+    with torch.no_grad():
+        labels = batch['labels']
+        batch.pop('labels')
+        batch = {k: v.to(device) for k, v in batch.items()}
+
+        outputs = model(**batch)
+        logits = outputs.logits.cpu().numpy()
+        #predictions = np.argmax(logits, axis=-1)
+
+        for i in torch.arange(len(labels)):
+            value = softmax(torch.tensor([logits[i][0], logits[i][1]])).tolist()
+            segment_name = labels[i]
+            seq_name = segment_name.rsplit('_', 2)[0]
+            if seq_name not in result:
+                result[seq_name] = []
+            result[seq_name].append(value[1])
+    return result
+
+
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+else:
+    os.environ['TOKENIZERS_PARALLELISM'] = 'false'
+    device = torch.device("cpu")
+    pool = ProcessPoolExecutor(max_workers=cpu_threads)
 if torch.cuda.device_count() > 1:
     print(f'\nRunning on {torch.cuda.device_count()} GPUs.')
     model = nn.DataParallel(model)
@@ -177,22 +207,35 @@ model.to(device)
 softmax = Softmax(dim=0)
 model.eval()
 result = {}
-with torch.no_grad():
-    for step, batch in enumerate(test_loader):
-        labels = batch['labels']
-        batch.pop('labels')
-        batch = {k: v.to(device) for k, v in batch.items()}
-        outputs = model(**batch)
-        logits = outputs.logits.cpu().numpy()
-        predictions = np.argmax(logits, axis=-1)
 
-        for i in torch.arange(len(labels)):
-            value = softmax(torch.tensor([logits[i][0], logits[i][1]])).tolist()
-            segment_name = labels[i]
-            seq_name = segment_name.rsplit('_', 2)[0]
+if torch.cuda.is_available():
+    with torch.no_grad():
+        for step, batch in enumerate(test_loader):
+            labels = batch['labels']
+            batch.pop('labels')
+            batch = {k: v.to(device) for k, v in batch.items()}
+
+            outputs = model(**batch)
+            logits = outputs.logits.cpu().numpy()
+            #predictions = np.argmax(logits, axis=-1)
+
+            for i in torch.arange(len(labels)):
+                value = softmax(torch.tensor([logits[i][0], logits[i][1]])).tolist()
+                segment_name = labels[i]
+                seq_name = segment_name.rsplit('_', 2)[0]
+                if seq_name not in result:
+                    result[seq_name] = []
+                result[seq_name].append(value[1])
+else:
+    tasks = []
+    tasks = [pool.submit(cpu_worker, batch, model, device) for batch in test_loader]
+    pool.shutdown(wait=True)
+    for task in as_completed(tasks):
+        predictions = task.result()
+        for seq_name in predictions:
             if seq_name not in result:
                 result[seq_name] = []
-            result[seq_name].append(value[1])
+            result[seq_name].extend(predictions[seq_name])
 
 f = open(f'{output_pth}/result_{filename}.csv', 'w')
 f.write(f'seq_name,prediction,virus_score\n')
