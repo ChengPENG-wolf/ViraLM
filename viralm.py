@@ -167,7 +167,7 @@ data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
 test_dataset = load_dataset('csv', data_files={'test': f'{cache_dir}/{filename}_temp.csv'}, cache_dir=cache_dir)
 tokenized_datasets = test_dataset.map(tokenize_function, batched=True, batch_size=256, remove_columns=["sequence"])
 tokenized_datasets = tokenized_datasets.with_format("torch")
-test_loader = DataLoader(tokenized_datasets["test"], batch_size=512, collate_fn=data_collator)
+test_loader = DataLoader(tokenized_datasets["test"], batch_size=batch_size, collate_fn=data_collator)
 
 
 def cpu_worker(batch, model, device):
