@@ -47,6 +47,8 @@ python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--len MINIMUM_LEN] [-
 
 **Options**
 
+*Note*: we recommend MINIMUM_LEN to be larger than 500 for reliable performance.
+
 ```
   --input INPUT_FA
                         The path of your input fasta file
