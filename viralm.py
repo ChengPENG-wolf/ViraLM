@@ -56,13 +56,19 @@ else:
     print('Error: The output directory already exist')
     exit(1)
 
+if len_threshold < 500:
+    print('Warning: The minimum length is smaller than 500 bp. We recommend to use >= 500 bp for an optimal prediction.')
+
+
 if not os.path.isdir(cache_dir):
     os.makedirs(cache_dir)
+
 
 def special_match(strg, search=re.compile(r'[^ACGT]').search):
     return not bool(search(strg))
 
-def preprocee_data(input_pth, output_pth, len_threshold):
+
+def preprocee_data(input_pth, cache_dir, len_threshold):
     frag_len = 2000
     filename = input_pth.rsplit('/')[-1].split('.')[0]
     f = open(f"{cache_dir}/{filename}_temp.csv", "w")
@@ -82,7 +88,7 @@ def preprocee_data(input_pth, output_pth, len_threshold):
                 sequence1 = sequence[last_pos-0:]
                 if special_match(sequence1):
                     f.write(f'{sequence1},{f"{record.id}_{last_pos - 0}_{len(record.seq)}"}\n')
-        elif len(sequence) >= 500:
+        elif len(sequence) >= len_threshold:
             if special_match(sequence):
                 f.write(f'{sequence},{f"{record.id}_{0}_{0+len(sequence)}"}\n')
     f.close()
@@ -146,7 +152,7 @@ def tokenize_function(examples):
     return tokenizer(examples["sequence"], truncation=True)
 
 
-preprocee_data(input_pth, output_pth, len_threshold)
+preprocee_data(input_pth, cache_dir, len_threshold)
 
 model = AutoModelForSequenceClassification.from_pretrained(
         model_pth,
