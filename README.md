@@ -69,7 +69,7 @@ python viralm.py --input test.fasta --out result --len 500 --threshold 0.5
 ```
 ## 4. Output explanation
 
-#### 1. `OUTPUT_PTH/result_INPUT_FA_NAME.csv`:
+#### 1. `OUTPUT_PTH`/result_`INPUT_FA_NAME`.csv:
 
 ```
 seq_name                                             prediction   virus_score           
@@ -86,9 +86,9 @@ This tabular file lists all the inputs and ViraLM's prediction on each input:
 - `prediction`: The final prediction of the input sequence, virus or non-virus.
 - `virus_score`: A value in [0, 1.0], indicates the likelihood of the input sequence being a viral sequence. The larger the more likely to be a virus.
 
-#### 2. `OUTPUT_PTH/virus_INPUT_FA_NAME.fasta`:
+#### 2. `OUTPUT_PTH`/virus_`INPUT_FA_NAME`.fasta:
 
-This FASTA file contains all the identified virus sequences.
+This FASTA file contains all the identified virus sequences that have virus_scores larger than `THRESHOLD`.
 
 ## 5. Citation
 
