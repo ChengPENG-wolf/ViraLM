@@ -59,7 +59,6 @@ else:
 if len_threshold < 500:
     print('Warning: The minimum length is smaller than 500 bp. We recommend to use >= 500 bp for an optimal prediction.')
 
-
 if not os.path.isdir(cache_dir):
     os.makedirs(cache_dir)
 
@@ -214,6 +213,7 @@ softmax = Softmax(dim=0)
 model.eval()
 result = {}
 
+# Predict
 if torch.cuda.is_available():
     with torch.no_grad():
         for step, batch in enumerate(test_loader):
@@ -243,22 +243,40 @@ else:
                 result[seq_name] = []
             result[seq_name].extend(predictions[seq_name])
 
+# process results
+virus_set = set()
+for seq_name in result:
+    result[seq_name] = np.mean(result[seq_name])
+    if result[seq_name] > score_threshold:
+        virus_set.add(seq_name)
+
+# sort by score
+result = {k: v for k, v in sorted(result.items(), key=lambda item: item[1], reverse=True)}
+
+# write results
 f = open(f'{output_pth}/result_{filename}.csv', 'w')
 f.write(f'seq_name,prediction,virus_score\n')
 for seq_name in result:
     f.write(f'{seq_name},')
-    score = np.mean(result[seq_name])
+    score = result[seq_name]
     if score > score_threshold:
         f.write(f'virus,{score}\n')
     else:
         f.write(f'non-virus,{score}\n')
 f.close()
 
+# write virus sequences
+records = []
+for record in SeqIO.parse(input_pth, "fasta"):
+    if record.id in virus_set:
+        records.append(record)
+SeqIO.write(records, f'{output_pth}/virus_{filename}.fasta', 'fasta')
+
 print('\nViraLM prediction finished.')
 
 for root, dirs, files in os.walk(f'{output_pth}', topdown=False):
     for name in files:
-        if f'result_{filename}.csv' not in name:
+        if f'result_{filename}.csv' not in name and f'virus_{filename}.fasta' not in name:
             try:
                 os.remove(os.path.join(root, name))
             except:
