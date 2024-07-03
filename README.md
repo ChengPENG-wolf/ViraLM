@@ -65,6 +65,7 @@ python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--len MINIMUM_LEN] [-
 Prediction on the example file:
 
 ```
+export CUDA_VISIBLE_DEVICES=0,1,2,...,n 	# (option) n is the number of GPUs
 python viralm.py --input test.fasta --out result --len 500 --threshold 0.5
 ```
 ## 4. Output explanation
