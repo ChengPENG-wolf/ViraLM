@@ -3,7 +3,6 @@
 ## The official implementation of [ViraLM: Empowering Virus Discovery through the Genome Foundation Model]
 
 ![GitHub License](https://img.shields.io/github/license/ChengPENG-wolf/ViraLM)
-[![Github All Releases](https://img.shields.io/github/downloads/KennthShang/PhaBOX/total.svg)](https://github.com/KennthShang/PhaBOX/releases/latest) 
 
 ## Contents
 
