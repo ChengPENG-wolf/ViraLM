@@ -22,6 +22,7 @@ parser = argparse.ArgumentParser(description='ViraLM v1.0\nViraLM is a python li
                                              'nucleotide information to make prediction.')
 parser.add_argument('--input', type=str, help='name of the input file (fasta format)')
 parser.add_argument('--output', type=str, help='output directory', default='result')
+parser.add_argument('-d', '--db', type=str, help='model directory', default='model')
 parser.add_argument('--threads', type=int, help='number of threads if run on cpu', default=1)
 parser.add_argument('--batch_size', type=int, help='batch size for prediction', default=16)
 parser.add_argument('--len', type=int, help='predict only for sequences >= len bp (default: 500)', default=500)
@@ -30,12 +31,12 @@ inputs = parser.parse_args()
 
 input_pth = inputs.input
 output_pth = inputs.output
+model_pth = inputs.db
 batch_size = inputs.batch_size
 len_threshold = int(inputs.len)
 score_threshold = float(inputs.threshold)
 cpu_threads = int(inputs.threads)
 cache_dir = f'{output_pth}/cache'
-model_pth = 'model'
 filename = input_pth.rsplit('/')[-1].split('.')[0]
 
 if score_threshold < 0.5:
