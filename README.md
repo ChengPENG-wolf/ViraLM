@@ -47,7 +47,7 @@ rm model.tar.gz
 **Run ViraLM in one command:**
 
 ```
-python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--db DB_PATH] [--len MINIMUM_LEN] [--threshold THRESHOLD]
+python viralm.py [-i INPUT_FA] [-o OUTPUT_PTH] [-d DATABASE_PATH] [-l MINIMUM_LEN] [-t THRESHOLD]
 ```
 
 **Options**
@@ -55,15 +55,15 @@ python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--db DB_PATH] [--len 
 *Note*: we recommend that `MINIMUM_LEN` be larger than 500 for reliable performance.
 
 ```
-  --input INPUT_FA
+-i, --input INPUT_FA
                         The path of your input fasta file
-  --output OUTPUT_PTH
+-o, --output OUTPUT_PTH
 			The path of your output diectory
-  -d DB, --db DB        
+-d --databse DATABASE_PATH        
                         Model directory
-  --len MINIMUM_LEN
+-l, --len MINIMUM_LEN
                         predict only for sequence >= len bp (default 500)
-  --threshold THRESHOLD
+-t, --threshold THRESHOLD
                         Threshold to reject (default 0.5).
 ```
 
