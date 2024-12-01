@@ -43,7 +43,7 @@ rm model.tar.gz
 **Run ViraLM in one command:**
 
 ```
-python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--len MINIMUM_LEN] [--threshold THRESHOLD]
+python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--db DB_PATH] [--len MINIMUM_LEN] [--threshold THRESHOLD]
 ```
 
 **Options**
@@ -55,6 +55,8 @@ python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--len MINIMUM_LEN] [-
                         The path of your input fasta file
   --output OUTPUT_PTH
 			The path of your output diectory
+  -d DB, --db DB        
+                        Model directory
   --len MINIMUM_LEN
                         predict only for sequence >= len bp (default 500)
   --threshold THRESHOLD
@@ -68,6 +70,12 @@ Prediction on the example file:
 ```
 export CUDA_VISIBLE_DEVICES=0,1,2,...,n 	# (option) n is the number of GPUs
 python viralm.py --input test.fasta --out result --len 500 --threshold 0.5
+```
+
+If you prefer storing your models/databases in a different location, then you can use
+`-d` or `--db` parameter:
+```
+python viralm.py --input test.fasta --out result -d /path/database/downloaded --len 500 --threshold 0.5
 ```
 ## 4. Output explanation
 
