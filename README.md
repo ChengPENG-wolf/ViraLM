@@ -1,8 +1,12 @@
 <img src="logo.png" alt="image" width="800" height=auto>
 
-## The official implementation of [ViraLM: Empowering Virus Discovery through the Genome Foundation Model]
+## The official implementation of [ViraLM: Empowering Virus Discovery through the Genome Foundation Model](https://doi.org/10.1093/bioinformatics/btae704)
 
 ![GitHub License](https://img.shields.io/github/license/ChengPENG-wolf/ViraLM)
+
+## News
+
+🎉 ViraLM is accepted by [Bioinformatics](https://doi.org/10.1093/bioinformatics/btae704)!
 
 ## Contents
 
@@ -15,7 +19,7 @@
 
 ## 1. Overview
 
-Viral Language Model (ViraLM) is a Python library for virus identification from metagenomic data.
+Viral Language Model (ViraLM) is a Python library for virus identification from metagenomic data. ViraLM employs the latest genome foundation model to capture complex genomic characteristics and is able to distinguish viral genomes from organisms.
 
 ## 2. Setup environment
 
@@ -48,7 +52,7 @@ python viralm.py [--input INPUT_FA] [--output OUTPUT_PTH] [--db DB_PATH] [--len 
 
 **Options**
 
-*Note*: we recommend `MINIMUM_LEN` to be larger than 500 for reliable performance.
+*Note*: we recommend that `MINIMUM_LEN` be larger than 500 for reliable performance.
 
 ```
   --input INPUT_FA
@@ -107,10 +111,10 @@ If you use ViraLM in your research, please kindly cite our paper:
 @article{peng2024viralm,
   title={ViraLM: Empowering Virus Discovery through the Genome Foundation Model},
   author={Peng, Cheng and Shang, Jiayu and Guan, Jiaojiao and Wang, Donglin and Sun, Yanni},
-  journal={bioRxiv},
-  pages={2024--01},
+  journal={Bioinformatics},
+  pages={btae704},
   year={2024},
-  publisher={Cold Spring Harbor Laboratory}
+  publisher={Oxford University Press}
 }
 ```
 
