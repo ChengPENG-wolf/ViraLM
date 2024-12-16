@@ -19,11 +19,11 @@ import os
 import shutil
 
 parser = argparse.ArgumentParser(description='ViraLM v1.0\nViraLM is a python library for identifying viruses from'
-                                             'metagenomic data. ViraLM is based on the language model and rely on '
+                                             'metagenomic data. ViraLM is based on the genome language model and rely on '
                                              'nucleotide information to make prediction.')
-parser.add_argument('--input', type=str, help='name of the input file (fasta format)')
-parser.add_argument('--output', type=str, help='output directory', default='result')
-parser.add_argument('-d', '--db', type=str, help='model directory', default='model')
+parser.add_argument('--input', '-i', type=str, help='name of the input file (fasta format)')
+parser.add_argument('--output', '-o', type=str, help='output directory', default='result')
+parser.add_argument('--database', '-d', type=str, help='model directory', default='model')
 parser.add_argument('--threads', type=int, help='number of threads if run on cpu', default=1)
 parser.add_argument('--batch_size', type=int, help='batch size for prediction', default=16)
 parser.add_argument('--len', type=int, help='predict only for sequences >= len bp (default: 500)', default=500)
@@ -33,7 +33,7 @@ inputs = parser.parse_args()
 
 input_pth = inputs.input
 output_pth = inputs.output
-model_pth = inputs.db
+model_pth = inputs.database
 batch_size = inputs.batch_size
 len_threshold = int(inputs.len)
 score_threshold = float(inputs.threshold)
