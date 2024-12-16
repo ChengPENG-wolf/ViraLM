@@ -1,3 +1,6 @@
+16/12/2024
+ - Add force overwrite output directory argument 
+
 01/12/2024
  - Add custom model path
  - Update README

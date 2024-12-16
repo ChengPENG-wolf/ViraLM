@@ -16,6 +16,7 @@ import torch
 import csv
 import re
 import os
+import shutil
 
 parser = argparse.ArgumentParser(description='ViraLM v1.0\nViraLM is a python library for identifying viruses from'
                                              'metagenomic data. ViraLM is based on the language model and rely on '
@@ -27,6 +28,7 @@ parser.add_argument('--threads', type=int, help='number of threads if run on cpu
 parser.add_argument('--batch_size', type=int, help='batch size for prediction', default=16)
 parser.add_argument('--len', type=int, help='predict only for sequences >= len bp (default: 500)', default=500)
 parser.add_argument('--threshold', type=float, help='threshold for prediction (default: 0.5)', default=0.5)
+parser.add_argument('-f', '--force', action='store_true', help='force overwrite of the output directory if it exists')
 inputs = parser.parse_args()
 
 input_pth = inputs.input
@@ -51,11 +53,15 @@ if output_pth == '':
     print('Error: Please specify a directory for output')
     exit(1)
 
-if not os.path.isdir(output_pth):
-    os.makedirs(output_pth)
+if os.path.isdir(output_pth):
+    if inputs.force:
+        shutil.rmtree(output_pth)
+        os.makedirs(output_pth)
+    else:
+        print('Error: The output directory already exists. Use -f or --force to overwrite.')
+        exit(1)
 else:
-    print('Error: The output directory already exist')
-    exit(1)
+    os.makedirs(output_pth)
 
 if len_threshold < 500:
     print('Warning: The minimum length is smaller than 500 bp. We recommend to use >= 500 bp for an optimal prediction.')
