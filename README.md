@@ -55,16 +55,21 @@ python viralm.py [-i INPUT_FA] [-o OUTPUT_PTH] [-d DATABASE_PATH] [-l MINIMUM_LE
 *Note*: we recommend that `MINIMUM_LEN` be larger than 500 for reliable performance.
 
 ```
--i, --input INPUT_FA
-                        The path of your input fasta file
--o, --output OUTPUT_PTH
-			The path of your output diectory
--d --databse DATABASE_PATH        
-                        Model directory
--l, --len MINIMUM_LEN
-                        predict only for sequence >= len bp (default 500)
--t, --threshold THRESHOLD
-                        Threshold to reject (default 0.5).
+  --input INPUT, -i INPUT
+                        name of the input file (fasta format)
+  --output OUTPUT, -o OUTPUT
+                        output directory
+  --database DATABASE, -d DATABASE
+                        model directory
+  --threads THREADS     number of threads if run on cpu
+  --batch_size BATCH_SIZE
+                        batch size for prediction
+  --len LEN             predict only for sequences >= len bp (default: 500)
+  --threshold THRESHOLD
+                        threshold for prediction (default: 0.5)
+  -f, --force           force overwrite of the output directory if it exists
+  -n FILENAME, --filename FILENAME
+                        custom name for output
 ```
 
 **Example**
@@ -78,6 +83,7 @@ python viralm.py --input test.fasta --out result --len 500 --threshold 0.5
 
 If you prefer storing your models/databases in a different location, then you can use
 `-d` or `--db` parameter:
+
 ```
 python viralm.py --input test.fasta --out result -d /path/database/downloaded --len 500 --threshold 0.5
 ```
