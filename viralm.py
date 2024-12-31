@@ -29,6 +29,7 @@ parser.add_argument('--batch_size', type=int, help='batch size for prediction', 
 parser.add_argument('--len', type=int, help='predict only for sequences >= len bp (default: 500)', default=500)
 parser.add_argument('--threshold', type=float, help='threshold for prediction (default: 0.5)', default=0.5)
 parser.add_argument('-f', '--force', action='store_true', help='force overwrite of the output directory if it exists')
+parser.add_argument('-n', '--filename', type=str, help='custom name for output', default=None)
 inputs = parser.parse_args()
 
 input_pth = inputs.input
@@ -39,7 +40,12 @@ len_threshold = int(inputs.len)
 score_threshold = float(inputs.threshold)
 cpu_threads = int(inputs.threads)
 cache_dir = f'{output_pth}/cache'
-filename = input_pth.rsplit('/')[-1].split('.')[0]
+filename = inputs.filename 
+
+if inputs.filename:  # If `--filename` is provided
+    filename = inputs.filename
+else:  # Fallback to default derived from input path
+    filename = input_pth.rsplit('/')[-1].split('.')[0]
 
 if score_threshold < 0.5:
     print('Error: Threshold for prediction must be >= 0.5')
@@ -66,39 +72,42 @@ else:
 if len_threshold < 500:
     print('Warning: The minimum length is smaller than 500 bp. We recommend to use >= 500 bp for an optimal prediction.')
 
+#if not os.path.isdir(cache_dir):
+#    os.makedirs(cache_dir)
+
 if not os.path.isdir(cache_dir):
     os.makedirs(cache_dir)
+    print(f"Cache directory created: {cache_dir}")
 
 
 def special_match(strg, search=re.compile(r'[^ACGT]').search):
     return not bool(search(strg))
 
-
-def preprocee_data(input_pth, cache_dir, len_threshold):
+def preprocee_data(input_pth, cache_dir, len_threshold, filename):
     frag_len = 2000
-    filename = input_pth.rsplit('/')[-1].split('.')[0]
-    f = open(f"{cache_dir}/{filename}_temp.csv", "w")
-    f.write(f'sequence,accession\n')
-    for record in SeqIO.parse(input_pth, "fasta"):
-        sequence = str(record.seq).upper()
-        if len(sequence) < len_threshold:
-            continue
-        if len(sequence) >= frag_len:
-            last_pos = 0
-            for i in range(0, len(sequence)-frag_len+1, 2000):
-                sequence1 = sequence[i:i + frag_len]
-                if special_match(sequence1):
-                    f.write(f'{sequence1},{f"{record.id}_{i}_{i+frag_len}"}\n')
-                last_pos = i+frag_len
-            if len(sequence) - last_pos >= 500:
-                sequence1 = sequence[last_pos-0:]
-                if special_match(sequence1):
-                    f.write(f'{sequence1},{f"{record.id}_{last_pos - 0}_{len(record.seq)}"}\n')
-        elif len(sequence) >= len_threshold:
-            if special_match(sequence):
-                f.write(f'{sequence},{f"{record.id}_{0}_{0+len(sequence)}"}\n')
-    f.close()
-
+    
+    # Create file in cache_dir
+    temp_file_path = f"{cache_dir}/{filename}_temp.csv"
+    with open(temp_file_path, "w") as f:
+        f.write(f'sequence,accession\n')
+        for record in SeqIO.parse(input_pth, "fasta"):
+            sequence = str(record.seq).upper()
+            if len(sequence) < len_threshold:
+                continue
+            if len(sequence) >= frag_len:
+                last_pos = 0
+                for i in range(0, len(sequence) - frag_len + 1, 2000):
+                    sequence1 = sequence[i:i + frag_len]
+                    if special_match(sequence1):
+                        f.write(f'{sequence1},{f"{record.id}_{i}_{i+frag_len}"}\n')
+                    last_pos = i + frag_len
+                if len(sequence) - last_pos >= 500:
+                    sequence1 = sequence[last_pos:]
+                    if special_match(sequence1):
+                        f.write(f'{sequence1},{f"{record.id}_{last_pos}_{len(record.seq)}"}\n')
+            elif len(sequence) >= len_threshold:
+                if special_match(sequence):
+                    f.write(f'{sequence},{f"{record.id}_{0}_{0+len(sequence)}"}\n')
 
 class SupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
@@ -158,7 +167,12 @@ def tokenize_function(examples):
     return tokenizer(examples["sequence"], truncation=True)
 
 
-preprocee_data(input_pth, cache_dir, len_threshold)
+preprocee_data(input_pth, cache_dir, len_threshold, filename)
+
+temp_file_path = f"{cache_dir}/{filename}_temp.csv"
+if not os.path.exists(temp_file_path):
+    print(f"Error: File {temp_file_path} was not created by preprocee_data.")
+    exit(1)
 
 model = AutoModelForSequenceClassification.from_pretrained(
         model_pth,
