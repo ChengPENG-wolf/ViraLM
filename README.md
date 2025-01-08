@@ -55,21 +55,22 @@ python viralm.py [-i INPUT_FA] [-o OUTPUT_PTH] [-d DATABASE_PATH] [-l MINIMUM_LE
 *Note*: we recommend that `MINIMUM_LEN` be larger than 500 for reliable performance.
 
 ```
-  --input INPUT, -i INPUT
-                        name of the input file (fasta format)
-  --output OUTPUT, -o OUTPUT
-                        output directory
-  --database DATABASE, -d DATABASE
-                        model directory
-  --threads THREADS     number of threads if run on cpu
+  --input INPUT_FA
+                        The name of your input file (FASTA format)
+  --output OUTPUT_PTH
+                        The path of the output directory
+  --filename FILENAME
+                        Custom name for output files (option)
+  --database DATABASE
+                        Model directory
+  --len LEN
+                        Predict only for sequences >= len bp (default: 500)
   --batch_size BATCH_SIZE
-                        batch size for prediction
-  --len LEN             predict only for sequences >= len bp (default: 500)
+                        Batch size for prediction (default: 16)
   --threshold THRESHOLD
                         threshold for prediction (default: 0.5)
-  -f, --force           force overwrite of the output directory if it exists
-  -n FILENAME, --filename FILENAME
-                        custom name for output
+  --force
+                        Force overwrite of the output directory if it exists (option)
 ```
 
 **Example**
