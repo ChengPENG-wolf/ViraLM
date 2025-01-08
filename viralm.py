@@ -28,8 +28,8 @@ parser.add_argument('--threads', type=int, help='number of threads if run on cpu
 parser.add_argument('--batch_size', type=int, help='batch size for prediction', default=16)
 parser.add_argument('--len', type=int, help='predict only for sequences >= len bp (default: 500)', default=500)
 parser.add_argument('--threshold', type=float, help='threshold for prediction (default: 0.5)', default=0.5)
-parser.add_argument('-f', '--force', action='store_true', help='force overwrite of the output directory if it exists')
-parser.add_argument('-n', '--filename', type=str, help='custom name for output', default=None)
+parser.add_argument('--force', '-f', action='store_true', help='force overwrite of the output directory if it exists')
+parser.add_argument('--filename', '-n', type=str, help='custom name for output', default=None)
 inputs = parser.parse_args()
 
 input_pth = inputs.input
@@ -72,13 +72,9 @@ else:
 if len_threshold < 500:
     print('Warning: The minimum length is smaller than 500 bp. We recommend to use >= 500 bp for an optimal prediction.')
 
-#if not os.path.isdir(cache_dir):
-#    os.makedirs(cache_dir)
-
 if not os.path.isdir(cache_dir):
     os.makedirs(cache_dir)
     print(f"Cache directory created: {cache_dir}")
-
 
 def special_match(strg, search=re.compile(r'[^ACGT]').search):
     return not bool(search(strg))
