@@ -68,7 +68,7 @@ python viralm.py [-i INPUT_FA] [-o OUTPUT_PTH] [-d DATABASE_PATH] [-l MINIMUM_LE
   --batch_size BATCH_SIZE
                         Batch size for prediction (default: 16)
   --threshold THRESHOLD
-                        threshold for prediction (default: 0.5)
+                        Threshold for prediction (default: 0.5)
   --force
                         Force overwrite of the output directory if it exists (option)
 ```
