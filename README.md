@@ -127,4 +127,4 @@ If you use ViraLM in your research, please kindly cite our paper:
 
 ## 6. Contact
 
-If you have any questions, please email us: cpeng29-c@my.cityu.edu.hk
+If you have any questions, please post an issue or email us: cpeng29-c@my.cityu.edu.hk
