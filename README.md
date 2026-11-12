@@ -13,7 +13,7 @@
 - [1. Introduction](#1-introduction)
 - [2. Setup Environment](#2-setup-environment)
 - [3. Quick Start](#3-quick-start)
-- [4. Output explanation](#4-output-explanation)
+- [4. Output Explanation](#4-output-explanation)
 - [5. Citation](#5-citation)
 - [6. Contact](#6-contact)
 
